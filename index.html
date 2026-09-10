@@ -1,0 +1,383 @@
+<title>H.Cube Hack</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --bg: #17130f;
+    --surface: #211a15;
+    --surface-2: #2a221b;
+    --border: #3a2f25;
+    --text: #ece2d4;
+    --text-dim: #a6988a;
+    --text-faint: #6f6255;
+    --accent: #d98c3f;
+    --accent-dim: #8a5a2c;
+    --cannot: #6f4040;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17130f;
+      --surface: #211a15;
+      --surface-2: #2a221b;
+      --border: #3a2f25;
+      --text: #ece2d4;
+      --text-dim: #a6988a;
+      --text-faint: #6f6255;
+      --accent: #d98c3f;
+      --accent-dim: #8a5a2c;
+      --cannot: #6f4040;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17130f;
+    --surface: #211a15;
+    --surface-2: #2a221b;
+    --border: #3a2f25;
+    --text: #ece2d4;
+    --text-dim: #a6988a;
+    --text-faint: #6f6255;
+    --accent: #d98c3f;
+    --accent-dim: #8a5a2c;
+    --cannot: #6f4040;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Inter", -apple-system, "Segoe UI", sans-serif;
+    min-height: 100vh;
+    padding: 48px 20px 80px;
+    background-image:
+      radial-gradient(ellipse 900px 500px at 50% -10%, rgba(217,140,63,0.08), transparent 60%);
+  }
+
+  .wrap { max-width: 920px; margin: 0 auto; }
+
+  header { text-align: center; margin-bottom: 36px; }
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 10px;
+  }
+  h1 {
+    font-family: "Cinzel", "Times New Roman", serif;
+    font-weight: 700;
+    font-size: clamp(28px, 4vw, 40px);
+    margin: 0 0 10px;
+    text-wrap: balance;
+    letter-spacing: 0.01em;
+  }
+  .sub {
+    color: var(--text-dim);
+    font-size: 14.5px;
+    margin: 0;
+    max-width: 60ch;
+    margin-inline: auto;
+    line-height: 1.6;
+  }
+
+  .search-shell { position: relative; margin: 32px auto 0; max-width: 560px; }
+  #search {
+    width: 100%;
+    font-family: "Cinzel", serif;
+    font-size: 19px;
+    padding: 16px 20px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+    letter-spacing: 0.02em;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  #search::placeholder { color: var(--text-faint); font-family: "Inter", sans-serif; letter-spacing: normal; }
+  #search:focus {
+    border-color: var(--accent-dim);
+    box-shadow: 0 0 0 3px rgba(217,140,63,0.15);
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin: 18px auto 0;
+    max-width: 640px;
+  }
+  .chip {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  }
+  .chip:hover { color: var(--text); border-color: var(--accent-dim); }
+  .chip.active { color: var(--bg); background: var(--accent); border-color: var(--accent); font-weight: 600; }
+
+  .result { margin-top: 40px; }
+  .empty {
+    text-align: center;
+    color: var(--text-faint);
+    font-size: 14px;
+    margin-top: 56px;
+  }
+  .empty b { color: var(--text-dim); }
+
+  .item-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+  .item-head h2 {
+    font-family: "Cinzel", serif;
+    font-size: 26px;
+    margin: 0;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+  }
+  .item-head span {
+    font-size: 12.5px;
+    color: var(--text-faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+  }
+  .cat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .cat.locked { opacity: 0.55; }
+  .cat h3 {
+    font-family: "Inter", sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin: 0 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cat h3::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex: none;
+  }
+  .cat.locked h3::before { background: var(--cannot); }
+  .cat ul { margin: 0; padding: 0; list-style: none; }
+  .cat li {
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 4px 0;
+    color: var(--text);
+  }
+  .cat li + li { border-top: 1px dashed var(--border); }
+  .cat.locked li { color: var(--text-faint); font-style: italic; }
+
+  .note {
+    margin-top: 28px;
+    font-size: 12.5px;
+    color: var(--text-faint);
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 56px;
+    font-size: 12px;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 32px 14px 60px; }
+    .item-head { flex-direction: column; align-items: flex-start; gap: 4px; }
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">H.Cube Hack</p>
+    <h1>Type a slot, see every roll</h1>
+    <p class="sub">A condensed Horadric Cube tempering reference. Search a gear slot to see exactly what each manual can roll on it.</p>
+  </header>
+
+  <div class="search-shell">
+    <input id="search" type="text" placeholder="Try: boots" autocomplete="off" spellcheck="false">
+  </div>
+  <div class="chips" id="chips"></div>
+
+  <div class="result" id="result"></div>
+
+  <footer>H.Cube Hack</footer>
+</div>
+
+<script>
+  const DATA = {
+    "Boots": {
+      "Kullean": null,
+      "Adept's": ["Main stat", "War Cry", "Leap", "Charge", "Kick", "Brawling"],
+      "Chromatic": ["Physical Resistance", "Fire Resistance", "Shadow Resistance", "Cold Resistance", "Poison Resistance"],
+      "Aggressive": ["Main stat", "War Cry", "Leap", "Charge", "Kick", "Brawling"],
+      "Pragmatic": ["Evade Grants Movement Speed", "Movement Speed", "Healing %", "(+) Maximum Evade Charges", "Life Regeneration", "Fortify Generation", "Barrier Generation"],
+      "Protector's": ["Physical Resistance", "Fire Resistance", "Shadow Resistance", "Cold Resistance", "Poison Resistance", "Maximum Life", "Dodge Chance", "Life on Kill", "Armor", "Life Regeneration"],
+      "Resourceful": ["Resource Regeneration"]
+    },
+    "Pants": {
+      "Kullean": null,
+      "Adept's": ["Main stat", "Lunging Strike", "Bash", "Flay", "Frenzy", "Basic"],
+      "Chromatic": ["Physical Resistance", "Fire Resistance", "Shadow Resistance", "Cold Resistance", "Poison Resistance"],
+      "Aggressive": ["Main stat", "Thorns"],
+      "Pragmatic": ["Life Regeneration", "Healing Percent", "Potion Capacity", "Thorns", "Fortify Generation", "Barrier Generation", "Impairment Reduction"],
+      "Protector's": ["Dodge chance", "Maximum Life", "Physical Resistance", "Fire Resistance", "Shadow Resistance", "Cold Resistance", "Poison Resistance", "Armor", "Life Regeneration", "Life on Kill", "Barrier Generation"],
+      "Resourceful": ["Resource Cost Reduction", "Resource Regeneration"]
+    },
+    "Chest": {
+      "Kullean": null,
+      "Adept's": ["Main stat", "Skill Ranks"],
+      "Chromatic": ["Physical Resistance", "Fire Resistance", "Shadow Resistance", "Cold Resistance", "Poison Resistance"],
+      "Aggressive": ["Main stat", "Thorns"],
+      "Pragmatic": ["Thorns", "Healing Received", "Life Regeneration", "Fortify Generation", "Impairment Reduction", "Barrier Generation"],
+      "Protector's": ["Maximum Life", "Life Regeneration", "Resistance to all Elements", "Armor", "Physical Resistance", "Fire Resistance", "Life on Kill", "Shadow Resistance", "Cold Resistance", "Poison Resistance"],
+      "Resourceful": ["Resource Cost Reduction", "Maximum Resources", "Resource Regeneration"]
+    },
+    "Helmet": {
+      "Kullean": null,
+      "Adept's": ["Main stat", "Skill Ranks"],
+      "Chromatic": ["Physical Resistance", "Fire Resistance", "Shadow Resistance", "Cold Resistance", "Poison Resistance"],
+      "Aggressive": ["Main stat"],
+      "Pragmatic": ["Thorns", "Healing Received", "Life Regeneration", "Resource Generation", "Cooldown Reduction", "Fortify Generation", "Lucky Hit Chance", "Impairment Reduction", "Barrier Generation"],
+      "Protector's": ["Maximum Life", "Life Regeneration", "Resistance to all Elements", "Armor", "Physical Resistance", "Fire Resistance", "Life on Kill", "Shadow Resistance", "Cold Resistance", "Poison Resistance"],
+      "Resourceful": ["Resource Cost Reduction", "Maximum Resources", "Resource Regeneration", "Resource Generation"]
+    },
+    "Gloves": {
+      "Kullean": null,
+      "Adept's": ["Main stat", "Skill Ranks"],
+      "Chromatic": ["Physical Resistance", "Fire Resistance", "Shadow Resistance", "Cold Resistance", "Poison Resistance"],
+      "Aggressive": ["Main stat", "Critical strike damage", "Physical Damage", "All Damage", "Critical Strike Chance", "Vulnerable Damage", "Attack Speed", "Fire Damage"],
+      "Pragmatic": ["Life Regeneration", "Fortify Generation", "Cooldown Reduction"],
+      "Protector's": ["Maximum Life", "Life on Hit", "Life on Kill"],
+      "Resourceful": ["Fury on kill", "Resource Cost Reduction", "Chance to restore primary resource"]
+    },
+    "Ring": {
+      "Kullean": null,
+      "Adept's": ["Main stat"],
+      "Chromatic": ["Physical Resistance", "Fire Resistance", "Shadow Resistance", "Cold Resistance", "Poison Resistance"],
+      "Aggressive": ["Main stat", "All Damage", "Critical Strike Chance", "Attack Speed", "Vulnerable Damage", "Damage over time", "Critical Strike Chance", "Phycical damage", "Damage over time"],
+      "Pragmatic": ["Cooldown Reduction", "Life Regeneration", "Lucky hit chance"],
+      "Protector's": ["Maximum Life", "All Resistances", "Armor", "Physical Resistance", "Fire Resistance", "Shadow Resistance", "Life on Hit", "Cold Resistance", "Poison Resistance"],
+      "Resourceful": ["Fury on Kill", "Resource Cost Reduction", "Resource Generation", "Chance to restore primary resource"]
+    },
+    "Weapon": {
+      "Kullean": null,
+      "Adept's": ["Main stat"],
+      "Chromatic": null,
+      "Aggressive": ["Main stat", "Critical strike damage", "Physical Damage", "All Damage", "Fire Damage"],
+      "Pragmatic": null,
+      "Protector's": ["Maximum Life", "Life on Hit", "Life on Kill"],
+      "Resourceful": ["Fury on kill", "Resource Cost Reduction", "Chance to restore primary resource"]
+    },
+    "Amulet": {
+      "Kullean": ["All Utility Aspects"],
+      "Adept's": ["Skill Ranks", "All Skill Ranks"],
+      "Chromatic": ["Physical Resistance", "Fire Resistance", "Shadow Resistance", "Cold Resistance", "Poison Resistance"],
+      "Aggressive": ["Main stat", "All Damage", "Critical Strike Chance", "Attack Speed", "Vulnerable Damage", "Damage over time", "Critical Strike Chance", "Phycical damage", "Damage over time"],
+      "Pragmatic": ["Movement Speed", "Lucky hit chance", "Cooldown Reduction", "Life Regeneration"],
+      "Protector's": ["Maximum Life", "Life on Hit", "Life on Kill"],
+      "Resourceful": null
+    }
+  };
+
+  const names = Object.keys(DATA);
+  const searchEl = document.getElementById("search");
+  const chipsEl = document.getElementById("chips");
+  const resultEl = document.getElementById("result");
+
+  names.forEach(n => {
+    const c = document.createElement("button");
+    c.className = "chip";
+    c.type = "button";
+    c.textContent = n;
+    c.addEventListener("click", () => {
+      searchEl.value = n;
+      render(n);
+      searchEl.focus();
+    });
+    chipsEl.appendChild(c);
+  });
+
+  function findMatch(q) {
+    const norm = q.trim().toLowerCase();
+    if (!norm) return null;
+    return names.find(n => n.toLowerCase() === norm) ||
+           names.find(n => n.toLowerCase().startsWith(norm)) ||
+           names.find(n => n.toLowerCase().includes(norm));
+  }
+
+  function render(query) {
+    const match = findMatch(query);
+
+    Array.from(chipsEl.children).forEach(c => {
+      c.classList.toggle("active", match && c.textContent === match);
+    });
+
+    if (!query.trim()) {
+      resultEl.innerHTML = `<p class="empty">Start typing, or pick a slot above &mdash; <b>${names.join(", ")}</b>.</p>`;
+      return;
+    }
+
+    if (!match) {
+      resultEl.innerHTML = `<p class="empty">No slot matches "<b>${escapeHtml(query)}</b>". Try one of: <b>${names.join(", ")}</b>.</p>`;
+      return;
+    }
+
+    const cats = DATA[match];
+    const cards = Object.entries(cats).map(([cat, list]) => {
+      if (!list) {
+        return `<div class="cat locked"><h3>${cat}</h3><ul><li>Cannot use</li></ul></div>`;
+      }
+      const items = list.map(x => `<li>${escapeHtml(x)}</li>`).join("");
+      return `<div class="cat"><h3>${cat}</h3><ul>${items}</ul></div>`;
+    }).join("");
+
+    resultEl.innerHTML = `
+      <div class="item-head">
+        <h2>${match}</h2>
+        <span>${Object.values(cats).filter(Boolean).length} of 7 manuals usable</span>
+      </div>
+      <div class="grid">${cards}</div>
+      <p class="note">Amulets only roll Utility aspects per class, and ranks are class based.<br>Main stats are Dexterity, Intelligence, Strength and Willpower.</p>
+    `;
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+
+  searchEl.addEventListener("input", () => render(searchEl.value));
+  render("Boots");
+  searchEl.value = "Boots";
+</script>
