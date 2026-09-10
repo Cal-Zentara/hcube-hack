@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>H.Cube Hack</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;500;600&display=swap">
 <style>
@@ -318,11 +323,20 @@
     flex: none;
   }
 
-  @media (max-width: 480px) {
-    body { padding: 32px 14px 60px; }
+  @media (max-width: 600px) {
+    body { padding: 28px 16px 56px; }
     .item-head { flex-direction: column; align-items: flex-start; gap: 4px; }
+    .eyebrow { font-size: 11px; }
+    .sub { font-size: 14px; }
+    #search { font-size: 17px; padding: 14px 16px; }
+    .chip { font-size: 12.5px; padding: 8px 13px; }
+    .cat, .prism { padding: 14px 16px; }
+    .item-head h2 { font-size: 22px; }
+    .prisms { margin-top: 48px; padding-top: 32px; }
   }
 </style>
+</head>
+<body>
 
 <div class="wrap">
   <header>
@@ -597,3 +611,5 @@
     </article>
   `).join("");
 </script>
+</body>
+</html>
