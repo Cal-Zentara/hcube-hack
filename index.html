@@ -182,7 +182,7 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--accent);
+    background: var(--dot, var(--accent));
     flex: none;
   }
   .cat.locked h3::before { background: var(--cannot); }
@@ -212,6 +212,112 @@
     letter-spacing: 0.04em;
   }
 
+  .prisms { margin-top: 64px; padding-top: 40px; border-top: 1px solid var(--border); }
+  .prisms > header { margin-bottom: 28px; }
+  .prisms .eyebrow { margin-bottom: 8px; }
+  .prisms h2 {
+    font-family: "Cinzel", serif;
+    font-size: clamp(22px, 3vw, 28px);
+    margin: 0 0 8px;
+    text-wrap: balance;
+  }
+
+  .prism-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+  }
+  .prism {
+    background: linear-gradient(175deg, var(--surface), var(--surface-2));
+    border: 1px solid var(--p-border);
+    border-radius: 8px;
+    padding: 18px 20px 16px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02), 0 12px 28px -20px var(--p-glow);
+  }
+  .prism-rare    { --p-border: #7d611c; --p-text: #e8c568; --p-glow: rgba(232,197,104,0.45); }
+  .prism-magic   { --p-border: #3a4d8f; --p-text: #9db3f2; --p-glow: rgba(157,179,242,0.4); }
+  .prism-unique  { --p-border: #8a4a1c; --p-text: #e8935a; --p-glow: rgba(232,147,90,0.45); }
+
+  .prism-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .prism-die { color: var(--p-text); opacity: 0.9; flex: none; }
+  .prism-gem { flex: none; }
+  .prism h3 {
+    font-family: "Cinzel", serif;
+    font-size: 15px;
+    line-height: 1.3;
+    color: var(--p-text);
+    margin: 0 0 6px;
+    letter-spacing: 0.02em;
+  }
+  .prism-rarity {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--p-text);
+    opacity: 0.8;
+    margin: 0 0 14px;
+  }
+  .prism-effect {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--text);
+    margin: 0 0 14px;
+  }
+  .prism-label {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--text-faint);
+    margin: 0 0 6px;
+  }
+  .prism-sources {
+    list-style: none;
+    margin: 0 0 14px;
+    padding: 0;
+    font-size: 12.5px;
+    color: var(--text-dim);
+    line-height: 1.75;
+  }
+  .prism-sources li::before {
+    content: "\2727";
+    color: var(--p-text);
+    margin-right: 7px;
+    font-size: 10px;
+  }
+  .prism-sources b { color: var(--text); font-weight: 500; }
+  .prism-quote {
+    font-size: 12px;
+    font-style: italic;
+    color: var(--text-faint);
+    line-height: 1.6;
+    border-top: 1px dashed var(--border);
+    padding-top: 12px;
+    margin: 0 0 14px;
+  }
+  .prism-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    font-size: 10.5px;
+    color: var(--text-faint);
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+    letter-spacing: 0.02em;
+  }
+  .prism-sell {
+    color: var(--p-text);
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: 12px;
+    flex: none;
+  }
+
   @media (max-width: 480px) {
     body { padding: 32px 14px 60px; }
     .item-head { flex-direction: column; align-items: flex-start; gap: 4px; }
@@ -231,6 +337,15 @@
   <div class="chips" id="chips"></div>
 
   <div class="result" id="result"></div>
+
+  <section class="prisms">
+    <header>
+      <p class="eyebrow">Cube Rerolls</p>
+      <h2>Tuning Prisms</h2>
+      <p class="sub">Consume one during a Transmutation to force the reroll toward that affix family instead of leaving it to chance.</p>
+    </header>
+    <div class="prism-grid" id="prismGrid"></div>
+  </section>
 
   <footer>H.Cube Hack</footer>
 </div>
@@ -311,6 +426,16 @@
     }
   };
 
+  const TIER_COLOR = {
+    "Kullean": "#e8935a",
+    "Adept's": "#e8c568",
+    "Chromatic": "#e8c568",
+    "Aggressive": "#9db3f2",
+    "Pragmatic": "#9db3f2",
+    "Protector's": "#9db3f2",
+    "Resourceful": "#9db3f2"
+  };
+
   const names = Object.keys(DATA);
   const searchEl = document.getElementById("search");
   const chipsEl = document.getElementById("chips");
@@ -360,7 +485,7 @@
         return `<div class="cat locked"><h3>${cat}</h3><ul><li>Cannot use</li></ul></div>`;
       }
       const items = list.map(x => `<li>${escapeHtml(x)}</li>`).join("");
-      return `<div class="cat"><h3>${cat}</h3><ul>${items}</ul></div>`;
+      return `<div class="cat" style="--dot:${TIER_COLOR[cat]}"><h3>${cat}</h3><ul>${items}</ul></div>`;
     }).join("");
 
     resultEl.innerHTML = `
@@ -380,4 +505,95 @@
   searchEl.addEventListener("input", () => render(searchEl.value));
   render("Boots");
   searchEl.value = "Boots";
+
+  const SOURCES = `
+    <li>Cube Spoils in <b>War Plans</b></li>
+    <li>Cache Rewards from <b>The Tree of Whispers</b></li>
+    <li>Elite monsters</li>
+    <li><b>Undercity of Kurast</b></li>
+  `;
+
+  const KULLE_QUOTE = "The materials of creation exist in abundance, in every particle of our world. Shaping them is a matter of will alone. Ours versus that of creation.";
+
+  const PRISMS = {
+    "Adept's": {
+      tier: "rare", rarity: "Rare Consumable", sell: 213,
+      gem: ["#f2b06b", "#b8531f"],
+      effect: "Used to target Skill and Core Stat affixes during Transmutations in the Horadric Cube.",
+      quote: "Why should humanity accept limitations? By whose authority?"
+    },
+    "Chromatic": {
+      tier: "rare", rarity: "Rare Consumable", sell: 78,
+      gem: ["#bfe0ff", "#3d79c9"],
+      effect: "Used to target Resistance affixes during Transmutations in the Horadric Cube.",
+      quote: KULLE_QUOTE
+    },
+    "Aggressive": {
+      tier: "magic", rarity: "Magic Consumable", sell: 203,
+      gem: ["#f2909e", "#c23a4f"],
+      effect: "Used to target Offensive affixes during Transmutations in the Horadric Cube.",
+      quote: KULLE_QUOTE
+    },
+    "Pragmatic": {
+      tier: "magic", rarity: "Magic Consumable", sell: 175,
+      gem: ["#e8c568", "#6b46b3"],
+      effect: "Used to target Mobility and Utility affixes during Transmutations in the Horadric Cube.",
+      quote: KULLE_QUOTE
+    },
+    "Protector's": {
+      tier: "magic", rarity: "Magic Consumable", sell: 169,
+      gem: ["#d6f0ff", "#4f8fd6"],
+      effect: "Used to target Defensive affixes during Transmutations in the Horadric Cube.",
+      quote: KULLE_QUOTE
+    },
+    "Resourceful": {
+      tier: "magic", rarity: "Magic Consumable", sell: 181,
+      gem: ["#b6e8c8", "#3f9f63"],
+      effect: "Used to target Resource affixes during Transmutations in the Horadric Cube.",
+      quote: KULLE_QUOTE
+    },
+    "Kullean": {
+      tier: "unique", rarity: "Unique Consumable", sell: 24,
+      gem: ["#e2b25a", "#8a2f2f"],
+      effect: "Only usable on Amulets. Used to influence Transfiguration outcomes in the Horadric Cube. Adds a random bonus Legendary Aspect. Allows the item to stay Modifiable after Transfiguration.",
+      quote: "I've refined these dull rocks as far as I can. Results are impressive, yet insignificant against the Primes. For them, I need a different sort of stone. Tyrael has brought me three."
+    }
+  };
+
+  function dieIcon() {
+    return `<svg class="prism-die" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z"/>
+      <path d="M12 2 L12 12 M3 7 L12 12 L21 7"/>
+    </svg>`;
+  }
+
+  function gemIcon(id, c1, c2) {
+    return `<svg width="30" height="30" viewBox="0 0 32 32">
+      <defs><linearGradient id="g${id}" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/>
+      </linearGradient></defs>
+      <polygon points="16,2 28,12 16,30 4,12" fill="url(#g${id})" stroke="rgba(0,0,0,0.4)" stroke-width="1"/>
+      <polygon points="16,2 22,12 16,18 10,12" fill="rgba(255,255,255,0.3)"/>
+    </svg>`;
+  }
+
+  const prismGrid = document.getElementById("prismGrid");
+  prismGrid.innerHTML = Object.entries(PRISMS).map(([name, p], i) => `
+    <article class="prism prism-${p.tier}">
+      <div class="prism-top">
+        ${dieIcon()}
+        ${gemIcon(i, p.gem[0], p.gem[1])}
+      </div>
+      <h3>${escapeHtml(name)} Tuning Prism</h3>
+      <p class="prism-rarity">${escapeHtml(p.rarity)}</p>
+      <p class="prism-effect">${escapeHtml(p.effect)}</p>
+      <p class="prism-label">Collected from</p>
+      <ul class="prism-sources">${SOURCES}</ul>
+      <p class="prism-quote">&ldquo;${escapeHtml(p.quote)}&rdquo;<br>&mdash;Zoltun Kulle</p>
+      <div class="prism-foot">
+        <span>Cannot Salvage &middot; Lord of Hatred Item</span>
+        <span class="prism-sell">${p.sell} gold</span>
+      </div>
+    </article>
+  `).join("");
 </script>
