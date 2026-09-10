@@ -271,56 +271,7 @@
     font-size: 13.5px;
     line-height: 1.55;
     color: var(--text);
-    margin: 0 0 14px;
-  }
-  .prism-label {
-    font-size: 10.5px;
-    text-transform: uppercase;
-    letter-spacing: 0.09em;
-    color: var(--text-faint);
-    margin: 0 0 6px;
-  }
-  .prism-sources {
-    list-style: none;
-    margin: 0 0 14px;
-    padding: 0;
-    font-size: 12.5px;
-    color: var(--text-dim);
-    line-height: 1.75;
-  }
-  .prism-sources li::before {
-    content: "\2727";
-    color: var(--p-text);
-    margin-right: 7px;
-    font-size: 10px;
-  }
-  .prism-sources b { color: var(--text); font-weight: 500; }
-  .prism-quote {
-    font-size: 12px;
-    font-style: italic;
-    color: var(--text-faint);
-    line-height: 1.6;
-    border-top: 1px dashed var(--border);
-    padding-top: 12px;
-    margin: 0 0 14px;
-  }
-  .prism-foot {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    font-size: 10.5px;
-    color: var(--text-faint);
-    border-top: 1px solid var(--border);
-    padding-top: 10px;
-    letter-spacing: 0.02em;
-  }
-  .prism-sell {
-    color: var(--p-text);
-    font-variant-numeric: tabular-nums;
-    font-weight: 600;
-    font-size: 12px;
-    flex: none;
+    margin: 0;
   }
 
   @media (max-width: 600px) {
@@ -520,57 +471,41 @@
   render("Boots");
   searchEl.value = "Boots";
 
-  const SOURCES = `
-    <li>Cube Spoils in <b>War Plans</b></li>
-    <li>Cache Rewards from <b>The Tree of Whispers</b></li>
-    <li>Elite monsters</li>
-    <li><b>Undercity of Kurast</b></li>
-  `;
-
-  const KULLE_QUOTE = "The materials of creation exist in abundance, in every particle of our world. Shaping them is a matter of will alone. Ours versus that of creation.";
-
   const PRISMS = {
     "Adept's": {
-      tier: "rare", rarity: "Rare Consumable", sell: 213,
+      tier: "rare", rarity: "Rare Consumable",
       gem: ["#f2b06b", "#b8531f"],
-      effect: "Used to target Skill and Core Stat affixes during Transmutations in the Horadric Cube.",
-      quote: "Why should humanity accept limitations? By whose authority?"
+      effect: "Used to target Skill and Core Stat affixes during Transmutations in the Horadric Cube."
     },
     "Chromatic": {
-      tier: "rare", rarity: "Rare Consumable", sell: 78,
+      tier: "rare", rarity: "Rare Consumable",
       gem: ["#bfe0ff", "#3d79c9"],
-      effect: "Used to target Resistance affixes during Transmutations in the Horadric Cube.",
-      quote: KULLE_QUOTE
+      effect: "Used to target Resistance affixes during Transmutations in the Horadric Cube."
     },
     "Aggressive": {
-      tier: "magic", rarity: "Magic Consumable", sell: 203,
+      tier: "magic", rarity: "Magic Consumable",
       gem: ["#f2909e", "#c23a4f"],
-      effect: "Used to target Offensive affixes during Transmutations in the Horadric Cube.",
-      quote: KULLE_QUOTE
+      effect: "Used to target Offensive affixes during Transmutations in the Horadric Cube."
     },
     "Pragmatic": {
-      tier: "magic", rarity: "Magic Consumable", sell: 175,
+      tier: "magic", rarity: "Magic Consumable",
       gem: ["#e8c568", "#6b46b3"],
-      effect: "Used to target Mobility and Utility affixes during Transmutations in the Horadric Cube.",
-      quote: KULLE_QUOTE
+      effect: "Used to target Mobility and Utility affixes during Transmutations in the Horadric Cube."
     },
     "Protector's": {
-      tier: "magic", rarity: "Magic Consumable", sell: 169,
+      tier: "magic", rarity: "Magic Consumable",
       gem: ["#d6f0ff", "#4f8fd6"],
-      effect: "Used to target Defensive affixes during Transmutations in the Horadric Cube.",
-      quote: KULLE_QUOTE
+      effect: "Used to target Defensive affixes during Transmutations in the Horadric Cube."
     },
     "Resourceful": {
-      tier: "magic", rarity: "Magic Consumable", sell: 181,
+      tier: "magic", rarity: "Magic Consumable",
       gem: ["#b6e8c8", "#3f9f63"],
-      effect: "Used to target Resource affixes during Transmutations in the Horadric Cube.",
-      quote: KULLE_QUOTE
+      effect: "Used to target Resource affixes during Transmutations in the Horadric Cube."
     },
     "Kullean": {
-      tier: "unique", rarity: "Unique Consumable", sell: 24,
+      tier: "unique", rarity: "Unique Consumable",
       gem: ["#e2b25a", "#8a2f2f"],
-      effect: "Only usable on Amulets. Used to influence Transfiguration outcomes in the Horadric Cube. Adds a random bonus Legendary Aspect. Allows the item to stay Modifiable after Transfiguration.",
-      quote: "I've refined these dull rocks as far as I can. Results are impressive, yet insignificant against the Primes. For them, I need a different sort of stone. Tyrael has brought me three."
+      effect: "Only usable on Amulets. Used to influence Transfiguration outcomes in the Horadric Cube. Adds a random bonus Legendary Aspect. Allows the item to stay Modifiable after Transfiguration."
     }
   };
 
@@ -601,13 +536,6 @@
       <h3>${escapeHtml(name)} Tuning Prism</h3>
       <p class="prism-rarity">${escapeHtml(p.rarity)}</p>
       <p class="prism-effect">${escapeHtml(p.effect)}</p>
-      <p class="prism-label">Collected from</p>
-      <ul class="prism-sources">${SOURCES}</ul>
-      <p class="prism-quote">&ldquo;${escapeHtml(p.quote)}&rdquo;<br>&mdash;Zoltun Kulle</p>
-      <div class="prism-foot">
-        <span>Cannot Salvage &middot; Lord of Hatred Item</span>
-        <span class="prism-sell">${p.sell} gold</span>
-      </div>
     </article>
   `).join("");
 </script>
